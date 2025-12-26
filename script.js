@@ -16,13 +16,21 @@ const title_input = document.getElementById("title");//section 2 ke ander first 
 //title_input ke ander store krva rhe hai.
 
 const description_input = document.getElementById("description");
-    let isUpdate = false;//to perform update and edit on same button 
-    let updateIndex = 0;
-    let notes = [];
+let isUpdate = false;//to perform update and edit on same button 
+let updateIndex = 0;
+let notes = [];
 const addNote = () => {
 
     const title = title_input.value;
     const description = description_input.value;
+     if (title === "" || description === "") {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Required!',
+            text: 'Title aur Description dono bharna zaroori hai'
+        });
+        return; // yahin function stop
+    }
     const note = {
         title: title,
         description: description,
@@ -39,13 +47,13 @@ const addNote = () => {
 const displayNotes = () => {
     note_container.innerHTML = "";
     const data = localStorage.getItem("notes-array");//notes-array ko display pr get krne ke liye data name ka variable 
-//bna ke usko usme store krvaya.but data is sttring.
-   if(data){//data ki value null  hogi to.
-        notes =  JSON.parse(data);
+    //bna ke usko usme store krvaya.but data is sttring.
+    if (data) {//data ki value null  hogi to.
+        notes = JSON.parse(data);
     }
-   // data comes from local storage . and store into actual array.
-  //  JSON.parse is a function it will be use to convirt string into array .
-    notes.forEach((note,i) => {
+    // data comes from local storage . and store into actual array.
+    //  JSON.parse is a function it will be use to convirt string into array .
+    notes.forEach((note, i) => {
         const div = document.createElement("div");
         div.className = "card w-25 m-2";
         div.innerHTML = `<div class="card-body">
@@ -58,39 +66,40 @@ const displayNotes = () => {
     })
 }
 
-const deleteNote=(i)=>{
-    notes.splice(i,1); //splice  name ki property delete krne ke liye use hoti hai. !!
+const deleteNote = (i) => {
+    notes.splice(i, 1); //splice  name ki property delete krne ke liye use hoti hai. !!
     localStorage.setItem("notes-array", JSON.stringify(notes));//becuse delete ke  baad ka jo data hai vo fir local storage me store ho jayega.
-//aur displarNotes ko call krya hai taki update  data display ho jaye 
+    //aur displarNotes ko call krya hai taki update  data display ho jaye 
     displayNotes();
 }
-const updateNotes=(i)=>{
-    isUpdate=true;
+const updateNotes = (i) => {
+    isUpdate = true;
     updateIndex = i;
     title_input.value = notes[i].title;
-    description_input.value=notes[i].description;
-    add_note_button.textContent="update notes";
+    description_input.value = notes[i].description;
+    add_note_button.textContent = "update notes";
 }
-const editNote=()=>{
-    notes[updateIndex].title=title_input.value;
+const editNote = () => {
+    notes[updateIndex].title = title_input.value;
     notes[updateIndex].description = description_input.value;
-    localStorage.setItem("notes-array",JSON.stringify(notes));
+    localStorage.setItem("notes-array", JSON.stringify(notes));
     isUpdate = false; // wapas add mode
     title_input.value = "";
     description_input.value = "";
     displayNotes();
-    add_note_button.textContent="Add note";
+    add_note_button.textContent = "Add note";
 }
 
 displayNotes();
 
-const handleUpdateAndEdit =()=>{
-    if(isUpdate){
+const handleUpdateAndEdit = () => {
+    if (isUpdate) {
         editNote();
-    }else{
-addNote();
+    } else {
+        addNote();
+        
     }
 
 }
-add_note_button.addEventListener("click",  handleUpdateAndEdit);
+add_note_button.addEventListener("click", handleUpdateAndEdit);
 //29.45 sec
