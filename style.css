@@ -6,7 +6,7 @@
     height: 80%;
     overflow-y: scroll ;
  }
-  /* ===== Reset ===== */
+/* ===== Reset ===== */
 * {
     margin: 0;
     padding: 0;
@@ -14,37 +14,65 @@
     font-family: "Segoe UI", sans-serif;
 }
 
-/* ===== Body ===== */
+/* ===== Body Animated Gradient ===== */
 body {
     min-height: 100vh;
-    background: #f4f6fb;
+    background: linear-gradient(120deg, #667eea, #764ba2, #6a11cb);
+    background-size: 300% 300%;
+    animation: bgMove 10s ease infinite;
 }
 
-/* ===== Note Section ===== */
+@keyframes bgMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ===== Notes Section ===== */
 .note-section {
-    padding: 40px 0;
-        background:linear-gradient(to, right red, yellow, green);
-
+    padding: 40px 20px;
+    height: 70vh;
+    overflow-y: auto;
 }
 
-/* ===== Container ===== */
+/* ===== Notes Container ===== */
 #note-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 25px;
 }
 
-/* ===== Card Style ===== */
+/* ===== Note Card ===== */
 .card {
     width: 280px;
-    border: none;
-    border-radius: 16px;
     background: white;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
-    animation: slideUp 0.6s ease forwards;
+    border-radius: 18px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
     position: relative;
     overflow: hidden;
+    animation: fadeScale 0.6s ease forwards;
+    transition: all 0.4s ease;
 }
 
-/* Top color strip */
+.card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.25);
+}
+
+/* Entry animation */
+@keyframes fadeScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Card top strip */
 .card::before {
     content: "";
     position: absolute;
@@ -52,19 +80,13 @@ body {
     left: 0;
     height: 5px;
     width: 100%;
-    background: linear-gradient(to right, #6a11cb, #2575fc);
+    background: linear-gradient(to right, #ff512f, #dd2476);
+    animation: hueRotate 3s linear infinite;
 }
 
-/* Card animation */
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+@keyframes hueRotate {
+    from { filter: hue-rotate(0deg); }
+    to { filter: hue-rotate(360deg); }
 }
 
 /* ===== Card Body ===== */
@@ -72,14 +94,12 @@ body {
     padding: 20px;
 }
 
-/* ===== Title ===== */
 .card-title {
     font-size: 18px;
     font-weight: 600;
-    color: #2d2d2d;
+    color: #222;
 }
 
-/* ===== Description ===== */
 .card-text {
     font-size: 14px;
     color: #555;
@@ -87,78 +107,93 @@ body {
 }
 
 /* ===== Buttons ===== */
-.card .btn {
+.card-body button,
+.card-body a {
+    padding: 7px 16px;
     font-size: 13px;
-    padding: 6px 14px;
     border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    margin-right: 8px;
     transition: all 0.3s ease;
 }
 
-.btn-warning {
-    background: #ffd166;
-    border: none;
+.card-body button {
+    background: linear-gradient(to right, #f7971e, #ffd200);
 }
 
-.btn-danger {
-    background: #ef476f;
-    border: none;
+.card-body a {
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
 }
 
-.card .btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+.card-body button:hover,
+.card-body a:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
 /* ===== Input Section ===== */
-section:nth-of-type(2) {
-    margin: 30px auto;
+section:last-of-type {
+    padding: 30px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+section:last-of-type > div {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    max-width: 900px;
 }
 
 /* ===== Inputs ===== */
 #title,
 #description {
+    flex: 1;
+    padding: 14px 16px;
+    border-radius: 14px;
     border: none;
-    border-radius: 12px;
-    padding: 12px 15px;
-    background: white;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
     outline: none;
-    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.35s ease;
 }
 
 #title:focus,
 #description:focus {
-    transform: scale(1.03);
-    box-shadow: 0 12px 25px rgba(106, 17, 203, 0.25);
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(255, 255, 255, 0.6);
 }
 
 /* ===== Add Button ===== */
 #add-note {
-    border-radius: 12px;
-    font-weight: 500;
-    background: linear-gradient(to right, #6a11cb, #2575fc);
+    padding: 14px 25px;
+    border-radius: 14px;
     border: none;
-    transition: all 0.3s ease;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    transition: all 0.35s ease;
 }
 
 #add-note:hover {
-    transform: scale(1.08);
-    box-shadow: 0 12px 30px rgba(37, 117, 252, 0.4);
+    transform: scale(1.1);
+    box-shadow: 0 15px 35px rgba(0, 114, 255, 0.6);
 }
 
-/* ===== Mobile ===== */
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
-    #title {
-        width: 85% !important;
-        margin: 10px auto !important;
+    section:last-of-type > div {
+        flex-direction: column;
     }
 
-    #description {
-        width: 90% !important;
-        margin: 10px auto !important;
-    }
-
+    #title,
+    #description,
     #add-note {
-        width: 85% !important;
+        width: 100%;
     }
 }
+
+/* box model /*
